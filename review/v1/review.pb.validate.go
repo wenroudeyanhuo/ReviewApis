@@ -1755,7 +1755,7 @@ func (m *AppealReviewReply) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for ReviewID
+	// no validation rules for AppealID
 
 	if len(errors) > 0 {
 		return AppealReviewReplyMultiError(errors)
@@ -1859,6 +1859,17 @@ func (m *AuditAppealReviewRequest) validate(all bool) error {
 
 	var errors []error
 
+	if m.GetAppealID() <= 0 {
+		err := AuditAppealReviewRequestValidationError{
+			field:  "AppealID",
+			reason: "value must be greater than 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	if m.GetReviewID() <= 0 {
 		err := AuditAppealReviewRequestValidationError{
 			field:  "ReviewID",
@@ -1868,6 +1879,32 @@ func (m *AuditAppealReviewRequest) validate(all bool) error {
 			return err
 		}
 		errors = append(errors, err)
+	}
+
+	if m.GetStatus() <= 0 {
+		err := AuditAppealReviewRequestValidationError{
+			field:  "Status",
+			reason: "value must be greater than 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if utf8.RuneCountInString(m.GetOpUser()) < 2 {
+		err := AuditAppealReviewRequestValidationError{
+			field:  "OpUser",
+			reason: "value length must be at least 2 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if m.OpRemarks != nil {
+		// no validation rules for OpRemarks
 	}
 
 	if len(errors) > 0 {
@@ -1971,8 +2008,6 @@ func (m *AuditAppealReviewReply) validate(all bool) error {
 	}
 
 	var errors []error
-
-	// no validation rules for ReviewID
 
 	if len(errors) > 0 {
 		return AuditAppealReviewReplyMultiError(errors)
