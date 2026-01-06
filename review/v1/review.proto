@@ -139,7 +139,7 @@ message AppealReviewRequest {
 }
 // 对评价进行申诉的返回值
 message AppealReviewReply {
-	int64 reviewID=1;
+	int64 appealID=1;
 }
 // 对申诉进行审核的请求
 message AuditAppealReviewRequest {
